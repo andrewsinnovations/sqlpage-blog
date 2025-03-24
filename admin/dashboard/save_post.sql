@@ -66,10 +66,28 @@ insert into sqlpage_files (
 )
 SELECT
     $sqlpage_path
-    , 'select ''shell-empty'' as component;
-    select ''html'' as component, setting_value as html from settings where setting_name = ''before_post'';
-    select ''html'' as component, posts.content as html from sqlpage_files inner join posts on sqlpage_files.post_id = posts.id where replace(sqlpage.path(), ''.sql'', '''''') = ''/'' || replace(sqlpage_files.path, ''.sql'', '''''');
-    select ''html'' as component, setting_value as html from settings where setting_name = ''after_post'';' as contents
+select ''status_code'' as component, 404 as status where $id is null;
+select ''shell-empty'' as component;
+select ''html'' as component, setting_value as html from settings where setting_name = ''before_post'';
+select ''text'' as component, ''404 - Page Not Found'' as title, ''This page was not found.'' as contents where $id is null;
+select ''html'' as component, ''<h1 style="font-size:150%">'' || title || ''</h1>'' as html from posts where id = $id;
+select ''html'' as component, CASE strftime(''%m'', posts.last_modified)
+    WHEN ''01'' THEN ''January''
+    WHEN ''02'' THEN ''February''
+    WHEN ''03'' THEN ''March''
+    WHEN ''04'' THEN ''April''
+    WHEN ''05'' THEN ''May''
+    WHEN ''06'' THEN ''June''
+    WHEN ''07'' THEN ''July''
+    WHEN ''08'' THEN ''August''
+    WHEN ''09'' THEN ''September''
+    WHEN ''10'' THEN ''October''
+    WHEN ''11'' THEN ''November''
+    WHEN ''12'' THEN ''December''
+  END || '' '' || strftime(''%d, %Y'', posts.last_modified) as html
+  from posts where id = $id;
+select ''html'' as component, ''<div class="mt-3">'' || content || ''</div>'' as html from posts where id = $id;
+select ''html'' as component, setting_value as html from settings where setting_name = ''after_post'';' as contents
     , current_timestamp
     , current_timestamp
     , $post_id
@@ -106,12 +124,29 @@ insert into sqlpage_files (
 )
 SELECT
     $sqlpage_path
-    , 'set contents = (select posts.content from sqlpage_files inner join posts on sqlpage_files.post_id = posts.id where replace(sqlpage.path(), ''.sql'', '''''') = ''/'' || replace(sqlpage_files.path, ''.sql'', ''''''));
-    select ''redirect'' as component, ''/404'' as link where $contents is null;
-    select ''shell-empty'' as component;
-    select ''html'' as component, setting_value as html from settings where setting_name = ''before_post'';
-    select ''html'' as component, $contents as html;    
-    select ''html'' as component, setting_value as html from settings where setting_name = ''after_post'';' as contents
+    , 'set id = (select posts.id as html from sqlpage_files inner join posts on sqlpage_files.post_id = posts.id where replace(sqlpage.path(), ''.sql'', '''''') = ''/'' || replace(sqlpage_files.path, ''.sql'', ''''''));
+select ''status_code'' as component, 404 as status where $id is null;
+select ''shell-empty'' as component;
+select ''html'' as component, setting_value as html from settings where setting_name = ''before_post'';
+select ''text'' as component, ''404 - Page Not Found'' as title, ''This page was not found.'' as contents where $id is null;
+select ''html'' as component, ''<h1 style="font-size:150%">'' || title || ''</h1>'' as html from posts where id = $id;
+select ''html'' as component, CASE strftime(''%m'', posts.last_modified)
+    WHEN ''01'' THEN ''January''
+    WHEN ''02'' THEN ''February''
+    WHEN ''03'' THEN ''March''
+    WHEN ''04'' THEN ''April''
+    WHEN ''05'' THEN ''May''
+    WHEN ''06'' THEN ''June''
+    WHEN ''07'' THEN ''July''
+    WHEN ''08'' THEN ''August''
+    WHEN ''09'' THEN ''September''
+    WHEN ''10'' THEN ''October''
+    WHEN ''11'' THEN ''November''
+    WHEN ''12'' THEN ''December''
+  END || '' '' || strftime(''%d, %Y'', posts.last_modified) as html
+  from posts where id = $id;
+select ''html'' as component, ''<div class="mt-3">'' || content || ''</div>'' as html from posts where id = $id;
+select ''html'' as component, setting_value as html from settings where setting_name = ''after_post'';' as contents
     , current_timestamp
     , current_timestamp
     , :id
