@@ -7,12 +7,14 @@ WHERE
 
 select 'shell-empty' as component;
 
+set blog_name = (select setting_value from settings where setting_name = 'blog_name');
+
 select 'html' as component
-    , setting_value as html
+    , replace(setting_value, '{{blog_name}}', $blog_name) as html
 FROM
     settings
 WHERE
-    setting_name = 'before_post';
+    setting_name = 'homepage_header';
 
 SELECT
     'html' as component
@@ -60,4 +62,4 @@ select 'html' as component
 FROM
     settings
 WHERE
-    setting_name = 'after_post';
+    setting_name = 'homepage_footer';

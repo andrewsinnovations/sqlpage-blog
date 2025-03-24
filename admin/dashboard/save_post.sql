@@ -61,8 +61,10 @@ set post_id = (
 set post_contents = (
 SELECT
     case when $published is not null then 'select ''shell-empty'' as component;
-select ''html'' as component, setting_value as html from settings where setting_name = ''before_post'';
-select ''html'' as component, ''<h1 style="font-size:150%">'' || title || ''</h1>'' as html from posts where id = cast(' || $id || ' as integer);
+set blog_name = (select setting_value from settings where setting_name = ''blog_name'');
+set title = (select title from posts where id = cast(' || $post_id || ' as integer));
+select ''html'' as component, replace(replace(setting_value, ''{{blog_name}}'', $blog_name), ''{{post_title}}'', $title) as html from settings where setting_name = ''before_post'';
+select ''html'' as component, ''<h1 style="font-size:150%">'' || title || ''</h1>'' as html from posts where id = cast(' || $post_id || ' as integer);
 select ''html'' as component, CASE strftime(''%m'', posts.last_modified)
     WHEN ''01'' THEN ''January''
     WHEN ''02'' THEN ''February''
@@ -77,14 +79,16 @@ select ''html'' as component, CASE strftime(''%m'', posts.last_modified)
     WHEN ''11'' THEN ''November''
     WHEN ''12'' THEN ''December''
   END || '' '' || strftime(''%d, %Y'', posts.last_modified) as html
-  from posts where id = cast(' || $id || ' as integer);
-select ''html'' as component, ''<div class="mt-3">'' || content || ''</div>'' as html from posts where id = cast(' || $id || ' as integer);
+  from posts where id = cast(' || $post_id || ' as integer);
+select ''html'' as component, ''<div class="mt-3">'' || content || ''</div>'' as html from posts where id = cast(' || $post_id || ' as integer);
 select ''html'' as component, setting_value as html from settings where setting_name = ''after_post'';'
 
     else 'set id = cast(' || $post_id || ' as integer);' || '
 select ''status_code'' as component, 404 as status;
 select ''shell-empty'' as component;
-select ''html'' as component, setting_value as html from settings where setting_name = ''before_post'';
+set blog_name = (select setting_value from settings where setting_name = ''blog_name'');
+set title = (''404 - Page Not Found'');
+select ''html'' as component, replace(replace(setting_value, ''{{blog_name}}'', $blog_name), ''{{post_title}}'', $title) as html from settings where setting_name = ''before_post'';
 select ''text'' as component, ''404 - Page Not Found'' as title, ''This page was not found.'' as contents;
 select ''html'' as component, setting_value as html from settings where setting_name = ''after_post'';'
     end
@@ -92,7 +96,7 @@ select ''html'' as component, setting_value as html from settings where setting_
 
 delete from sqlpage_files 
 where 
-    path = $sqlpage_path and :id = 'new';
+    path = $sqlpage_path;
 
 insert into sqlpage_files (
     path
@@ -106,10 +110,7 @@ SELECT
     , $post_contents as contents
     , current_timestamp
     , current_timestamp
-    , $post_id
-WHERE
-    :id = 'new'
-    and $published is not null;
+    , $post_id;
     
 SELECT
     'redirect' as component
@@ -126,25 +127,6 @@ set
     , published = case when $published is not null then 1 else 0 end
 WHERE
     id = :id;
-
-delete from sqlpage_files
-WHERE
-    path = $sqlpage_path
-    or post_id = :id;
-
-insert into sqlpage_files (
-    path
-    , contents
-    , created_at
-    , last_modified
-    , post_id
-)
-SELECT
-    $sqlpage_path
-    , $post_contents as contents
-    , current_timestamp
-    , current_timestamp
-    , :id;
 
 select 'redirect' as component
     , '/admin/dashboard/post?saved=1&id=' || :id as link;

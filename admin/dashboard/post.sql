@@ -11,6 +11,20 @@ SELECT
     sqlpage.run_sql('sqlpage/admin/tabs_dashboard.sql', json_object('type', coalesce($type, 'post'))) AS properties;
 
 SELECT
+    'alert' as component
+    , 'blue' as color
+    , 'Your post was saved!' as title
+    , case when published = true then '/' || replace(sqlpage_files.path, '.sql', '') else null end as link
+    , 'Click here to view your post' as link_text
+    , case when published = false then 'It has not yet been published.' else null end as description
+FROM
+    posts
+    left join sqlpage_files on posts.id = sqlpage_files.post_id
+WHERE
+    $saved = 1
+    AND id = $id;
+
+SELECT
     'form_with_html' as component
     , 'Save' as validate
     , 'post-form' as id
