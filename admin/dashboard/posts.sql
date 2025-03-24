@@ -11,6 +11,13 @@ SELECT
     sqlpage.run_sql('sqlpage/admin/tabs_dashboard.sql') AS properties;
 
 SELECT
+    'alert' as component
+    , 'blue' as color
+    , 'Post deleted successfully.' as title
+WHERE
+    $deleted = 1;
+
+SELECT
     'button' as component;
 
 select 
