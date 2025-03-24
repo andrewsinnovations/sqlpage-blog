@@ -1,0 +1,1 @@
+alter table uploaded_files add mime_type text;

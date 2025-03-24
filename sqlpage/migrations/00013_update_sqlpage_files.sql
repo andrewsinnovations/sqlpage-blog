@@ -1,0 +1,1 @@
+alter table sqlpage_files add column file_id integer;
