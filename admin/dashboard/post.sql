@@ -97,10 +97,9 @@ SELECT
     'Published' as label
     , 'checkbox' as type
     , 'published' as name
-    , case when sqlpage_files.path is not null then true else false end as checked
+    , case when published = 1 then true else 0 end as checked
 FROM
     posts
-    left join sqlpage_files on posts.id = sqlpage_files.post_id
 WHERE
      id = $id
      AND $id != 'new';

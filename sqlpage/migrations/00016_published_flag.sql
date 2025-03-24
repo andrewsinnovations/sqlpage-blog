@@ -1,0 +1,1 @@
+alter table posts add column published boolean default false;

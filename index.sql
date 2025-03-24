@@ -20,7 +20,7 @@ SELECT
 
 SELECT
     'html' as component,
-    '<li><a href="/' || sqlpage_files.path || '">' || title || '</a><br/>' || 
+    '<li><a href="/' || replace(sqlpage_files.path, '.sql', '') || '">' || title || '</a><br/>' || 
       CASE strftime('%m', sqlpage_files.last_modified)
     WHEN '01' THEN 'January'
     WHEN '02' THEN 'February'
@@ -40,6 +40,8 @@ FROM
     sqlpage_files
     inner join posts
         on sqlpage_files.post_id = posts.id
+WHERE
+    posts.published = true
 order BY
     sqlpage_files.last_modified desc;
 
@@ -47,7 +49,7 @@ SELECT
     'html'
     , '<p>No posts yet.</p>' as html
 WHERE
-    not exists (SELECT 1 FROM sqlpage_files);
+    not exists (SELECT * FROM posts where published = true);
 
 SELECT
     'html' as component

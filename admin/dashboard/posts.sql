@@ -28,11 +28,11 @@ SELECT
 
 SELECT
     '[' || case when trim(title) != '' then title else 'No title set' end || '](post?id=' || id || ')' as title 
-    , case when sqlpage_files.created_at is not null then '[' || replace(sqlpage_files.path, '.sql', '') || '](/' || replace(sqlpage_files.path, '.sql', '')  || ')'
+    , case when posts.published = true then '[' || replace(sqlpage_files.path, '.sql', '') || '](/' || replace(sqlpage_files.path, '.sql', '')  || ')'
         else 'Not published' 
     end as url
     , posts.last_modified as `Last Updated`
-    , case when sqlpage_files.created_at is not null then 'Yes' else 'No' end as Published
+    , case when posts.published = true then 'Yes' else 'No' end as Published
 FROM
     posts
     left join sqlpage_files on posts.id = sqlpage_files.post_id
