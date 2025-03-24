@@ -66,6 +66,7 @@ insert into sqlpage_files (
 )
 SELECT
     $sqlpage_path
+    , 'set id = (select posts.id as html from sqlpage_files inner join posts on sqlpage_files.post_id = posts.id where replace(sqlpage.path(), ''.sql'', '''''') = ''/'' || replace(sqlpage_files.path, ''.sql'', ''''''));
 select ''status_code'' as component, 404 as status where $id is null;
 select ''shell-empty'' as component;
 select ''html'' as component, setting_value as html from settings where setting_name = ''before_post'';
