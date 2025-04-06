@@ -59,40 +59,21 @@ set post_id = (
 )
 
 set post_contents = (
-SELECT
-    case when $published is not null then 'select ''shell-empty'' as component;
-set blog_name = (select setting_value from settings where setting_name = ''blog_name'');
-set title = (select title from posts where id = cast(' || $post_id || ' as integer));
-select ''html'' as component, replace(replace(setting_value, ''{{blog_name}}'', $blog_name), ''{{post_title}}'', $title) as html from settings where setting_name = ''before_post'';
-select ''html'' as component, ''<h1 style="font-size:150%">'' || title || ''</h1>'' as html from posts where id = cast(' || $post_id || ' as integer);
-select ''html'' as component, CASE strftime(''%m'', posts.last_modified)
-    WHEN ''01'' THEN ''January''
-    WHEN ''02'' THEN ''February''
-    WHEN ''03'' THEN ''March''
-    WHEN ''04'' THEN ''April''
-    WHEN ''05'' THEN ''May''
-    WHEN ''06'' THEN ''June''
-    WHEN ''07'' THEN ''July''
-    WHEN ''08'' THEN ''August''
-    WHEN ''09'' THEN ''September''
-    WHEN ''10'' THEN ''October''
-    WHEN ''11'' THEN ''November''
-    WHEN ''12'' THEN ''December''
-  END || '' '' || strftime(''%d, %Y'', posts.last_modified) as html
-  from posts where id = cast(' || $post_id || ' as integer);
-select ''html'' as component, ''<div class="mt-3">'' || content || ''</div>'' as html from posts where id = cast(' || $post_id || ' as integer);
-select ''html'' as component, setting_value as html from settings where setting_name = ''after_post'';'
-
-    else 'set id = cast(' || $post_id || ' as integer);' || '
-select ''status_code'' as component, 404 as status;
-select ''shell-empty'' as component;
-set blog_name = (select setting_value from settings where setting_name = ''blog_name'');
-set title = (''404 - Page Not Found'');
-select ''html'' as component, replace(replace(setting_value, ''{{blog_name}}'', $blog_name), ''{{post_title}}'', $title) as html from settings where setting_name = ''before_post'';
-select ''text'' as component, ''404 - Page Not Found'' as title, ''This page was not found.'' as contents;
-select ''html'' as component, setting_value as html from settings where setting_name = ''after_post'';'
-    end
-)
+    select 'select ''shell-empty'' as component;
+    set post = (
+        select json_extract(sqlpage.run_sql(''.post_data.sql'', json_object(''post_id'', ' || $id || ')), ''$[0].posts[0]'') as post_data
+    )
+    set settings = (
+        select
+        json_extract(
+            JSON(
+                sqlpage.run_sql(''.settings_data.sql'')
+            )
+            , ''$[0].settings''
+        )
+    );  
+    select ''post'' as component, JSON($post) as post, json($settings) as settings;'
+);
 
 delete from sqlpage_files 
 where 
