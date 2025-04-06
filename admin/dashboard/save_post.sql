@@ -60,8 +60,9 @@ set post_id = (
 
 set post_contents = (
     select 'select ''shell-empty'' as component;
+    insert into traffic (post_id, url) values (' || $post_id || ', sqlpage.path());
     set post = (
-        select json_extract(sqlpage.run_sql(''.post_data.sql'', json_object(''post_id'', ' || $id || ')), ''$[0].posts[0]'') as post_data
+        select json_extract(sqlpage.run_sql(''.post_data.sql'', json_object(''post_id'', ' || $post_id || ')), ''$[0].posts[0]'') as post_data
     )
     set settings = (
         select

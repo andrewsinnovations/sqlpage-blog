@@ -4,6 +4,9 @@ SELECT
 WHERE
     not exists (select * from login);
 
+insert into traffic (url)
+values ('/');
+
 select 'shell-empty' as component;
 
 set posts = (

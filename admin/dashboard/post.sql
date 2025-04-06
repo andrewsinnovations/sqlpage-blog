@@ -129,6 +129,37 @@ SELECT
     });</script>' as html;
 
 SELECT
+    'chart' as component, 
+    'blue' as color,
+    true as time,
+    'Views' as title
+WHERE
+    $id != 'new';
+
+SELECT
+    date(created_at) as x
+    , count(*) as y
+FROM
+    traffic
+WHERE
+    post_id = $id
+    and $id != 'new';
+
+SELECT
+    'table' as component;
+
+SELECT
+    date(created_at) as "Date"
+    , count(*) as "Views"
+FROM
+    traffic
+WHERE
+    post_id = $id
+    and $id != 'new'
+order BY
+        created_at desc;
+
+SELECT
     'foldable' as component
 WHERE
     $id != 'new';
