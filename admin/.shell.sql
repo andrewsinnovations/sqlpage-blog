@@ -14,7 +14,7 @@ SELECT
     , JSON('{
         "title": "Settings", 
         "icon": "settings",
-        "link": "/admin/settings"
+        "link": "/admin/settings/config"
     }') as menu_item
     , JSON('{   
             "icon": "user"

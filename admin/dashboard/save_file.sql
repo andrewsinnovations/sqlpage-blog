@@ -1,6 +1,6 @@
 SELECT
     'dynamic' as component,   
-    sqlpage.run_sql('sqlpage/admin/check_session.sql') AS properties;
+    sqlpage.run_sql('admin/.check_session.sql') AS properties;
 
 SELECT
     'redirect' as component

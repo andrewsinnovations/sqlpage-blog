@@ -1,6 +1,6 @@
 SELECT
     'dynamic' as component,   
-    sqlpage.run_sql('sqlpage/admin/check_session.sql') AS properties;
+    sqlpage.run_sql('admin/.check_session.sql') AS properties;
 
 set user_id = (
     SELECT
@@ -50,7 +50,7 @@ set changed = case when sqlpage.request_method() = 'POST' then 1 else 0 end;
 
 SELECT
     'dynamic' as component,   
-    sqlpage.run_sql('sqlpage/admin/shell.sql') AS properties;
+    sqlpage.run_sql('admin/.shell.sql') AS properties;
 
 select 
     'alert' as component

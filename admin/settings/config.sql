@@ -1,14 +1,14 @@
 SELECT
     'dynamic' as component,
-    sqlpage.run_sql('sqlpage/admin/check_session.sql') AS properties;
+    sqlpage.run_sql('admin/.check_session.sql') AS properties;
 
 SELECT
     'dynamic' as component,   
-    sqlpage.run_sql('sqlpage/admin/shell.sql') AS properties;
+    sqlpage.run_sql('admin/.shell.sql') AS properties;
 
 SELECT
     'dynamic' as component,   
-    sqlpage.run_sql('sqlpage/admin/tabs_settings.sql') AS properties;
+    sqlpage.run_sql('admin/settings/.tabs.sql') AS properties;
 
 UPDATE
     settings

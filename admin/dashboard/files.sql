@@ -1,14 +1,14 @@
 SELECT
     'dynamic' as component,   
-    sqlpage.run_sql('sqlpage/admin/check_session.sql') AS properties;
+    sqlpage.run_sql('admin/.check_session.sql') AS properties;
 
 SELECT
     'dynamic' as component,   
-    sqlpage.run_sql('sqlpage/admin/shell.sql') AS properties;
+    sqlpage.run_sql('admin/.shell.sql') AS properties;
 
 SELECT
     'dynamic' as component,   
-    sqlpage.run_sql('sqlpage/admin/tabs_dashboard.sql') AS properties;
+    sqlpage.run_sql('admin/dashboard/.tabs.sql') AS properties;
 
 SELECT
     'alert' as component
