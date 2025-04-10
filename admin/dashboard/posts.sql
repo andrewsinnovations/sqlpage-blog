@@ -71,7 +71,9 @@ SELECT
     date(created_at) as x
     , count(*) as y
 FROM
-    traffic;
+    traffic
+group BY
+    date(created_at);
 
 SELECT
     'table' as component;
@@ -81,5 +83,7 @@ SELECT
     , count(*) as "Views"
 FROM
     traffic
+group BY
+    date(created_at)
 order BY
         created_at desc;

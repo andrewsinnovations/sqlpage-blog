@@ -143,7 +143,9 @@ FROM
     traffic
 WHERE
     post_id = $id
-    and $id != 'new';
+    and $id != 'new'
+group BY
+    date(created_at);
 
 SELECT
     'table' as component;
@@ -156,6 +158,8 @@ FROM
 WHERE
     post_id = $id
     and $id != 'new'
+group BY
+    date(created_at)
 order BY
         created_at desc;
 
