@@ -4,7 +4,7 @@ SELECT
 
 SELECT
     'dynamic' as component,
-   sqlpage.run_sql('admin/.shell.sql') AS properties;
+   sqlpage.run_sql('admin/.shell.sql', json_object('shell_title', 'Templates')) AS properties;
 
 SELECT
     'alert' as component
@@ -29,8 +29,8 @@ SELECT
     , 'No templates have been created yet.' as empty_description;
 
 SELECT
-    '[' || case when trim(name) != '' then name else 'No title set' end || '](template/edit?id=' || id || ')' as Template
+    '[' || case when post_default = true then '(Post Default) ' else '' end ||  case when trim(name) != '' then name else 'No title set' end || '](template/edit?id=' || id || ')' as Template
 FROM 
     template
 order BY
-    name;
+    lower(name);

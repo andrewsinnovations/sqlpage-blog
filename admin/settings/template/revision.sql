@@ -4,10 +4,14 @@ SELECT
 
 SELECT
     'dynamic' as component,   
-    sqlpage.run_sql('admin/.shell.sql') as properties;
+    sqlpage.run_sql('admin/.shell.sql', json_object('shell_title', 'Template History')) as properties;
+
+set template_id = (
+    select template_id from template_history where id = $id
+);
 
 select 'dynamic' as component
-    , sqlpage.run_sql('admin/settings/template/.tabs.sql') AS properties;
+    , sqlpage.run_sql('admin/settings/template/.tabs.sql', json_object('id', $template_id)) AS properties;
 
 select 'breadcrumb' as component;
 
@@ -28,12 +32,27 @@ FROM
     template_history
 WHERE
     template_history.id = $id;
-            
-select 'divider' as component;  
-select 'button' as component, 'right'as align;
 
+select 
+    'button' as component, 'mt-2' as class;
+
+-- show restore button but only if this is not the most recent revision
 select 'Restore This Version' as title
-    , 'green' as color;  
+    , 'green' as color
+    , 'restore?id=' || $id as link
+WHERE
+    $id != (
+        select 
+            max(template_history.id) 
+        from 
+            template_history  
+        where 
+            template_history.template_id = (
+                select template_id 
+                from template_history
+                where id = $id
+            ) 
+    )
 
 SELECT
     'text' as component

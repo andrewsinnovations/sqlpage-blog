@@ -4,7 +4,7 @@ SELECT
 
 SELECT
     'dynamic' as component,   
-    sqlpage.run_sql('admin/.shell.sql') AS properties;
+    sqlpage.run_sql('admin/.shell.sql', json_object('shell_title', 'Edit Post')) AS properties;
 
 SELECT
     'alert' as component
@@ -76,6 +76,34 @@ FROM
 WHERE
      id = $id
      AND $id != 'new';
+
+SELECT
+    'select' as type
+    , 'Template' as label
+    , 'template_id' as name
+    , (select id from template where post_default = true) as value
+    , (
+        select json_group_array(json_object('value', id, 'label', name))
+        from template
+        order by lower(name)
+    ) as options
+WHERE
+    $id is null;
+
+SELECT
+    'select' as type
+    , 'Template' as label
+    , 'template_id' as name
+    , template_id as value
+    , (
+        select json_group_array(json_object('value', id, 'label', name))
+        from template
+        order by lower(name)
+    ) as options
+FROM
+    posts
+WHERE
+    id = $id;
 
 SELECT
     'html' as type

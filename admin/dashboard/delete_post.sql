@@ -4,7 +4,7 @@ SELECT
 
 SELECT
     'dynamic' as component,   
-    sqlpage.run_sql('admin/.shell.sql') AS properties
+    sqlpage.run_sql('admin/.shell.sql', json_object('shell_title', 'Delete Post')) AS properties
 WHERE
     sqlpage.request_method() = 'GET';
 

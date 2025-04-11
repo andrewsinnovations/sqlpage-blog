@@ -50,7 +50,7 @@ set changed = case when sqlpage.request_method() = 'POST' then 1 else 0 end;
 
 SELECT
     'dynamic' as component,   
-    sqlpage.run_sql('admin/.shell.sql') AS properties;
+    sqlpage.run_sql('admin/.shell.sql', json_object('shell_title', 'Change Password')) AS properties;
 
 select 
     'alert' as component

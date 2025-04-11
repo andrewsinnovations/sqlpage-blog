@@ -33,6 +33,7 @@ require(["vs/editor/editor.main"], function() {
     }
     else {
         setValue("");
+        createEditor();
     }
     
 });

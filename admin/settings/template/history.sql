@@ -6,6 +6,7 @@ SELECT
     'dynamic' as component,   
     sqlpage.run_sql('admin/.shell.sql'
         , json_object(
+            'shell_title', 'Template History',
             'additional_javascript', JSON('["https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs/loader.min.js"]'),
             'additional_javascript_module', JSON('["/admin/settings/template/edit_script"]')
         )

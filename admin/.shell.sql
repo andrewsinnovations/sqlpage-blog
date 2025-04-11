@@ -1,6 +1,8 @@
 set shell = (
     SELECT
-        json_set(JSON(sqlpage.read_file_as_text('admin/.shell.json')), '$.title', setting_value) as shell
+        json_set(JSON(sqlpage.read_file_as_text('admin/.shell.json')), '$.title', setting_value || 
+            case when $shell_title is not null then ' - ' || $shell_title else '' end
+        )  as shell
     FROM
         settings
     WHERE

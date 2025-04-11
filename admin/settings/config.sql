@@ -4,7 +4,7 @@ SELECT
 
 SELECT
     'dynamic' as component,   
-    sqlpage.run_sql('admin/.shell.sql') AS properties;
+    sqlpage.run_sql('admin/.shell.sql', json_object('shell_title', 'Configuration')) AS properties;
 
 UPDATE
     settings
