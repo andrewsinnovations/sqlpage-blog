@@ -3,80 +3,34 @@ SELECT
     sqlpage.run_sql('admin/.check_session.sql') AS properties;
 
 SELECT
-    'dynamic' as component,   
-    sqlpage.run_sql('admin/.shell.sql') AS properties;
+    'dynamic' as component,
+   sqlpage.run_sql('admin/.shell.sql') AS properties;
 
 SELECT
-    'dynamic' as component,   
-    sqlpage.run_sql('admin/settings/.tabs.sql') AS properties;
+    'alert' as component
+    , 'blue' as color
+    , 'Post deleted successfully.' as title
+WHERE
+    $deleted = 1;
 
-delete from sqlpage_files
-where path = 'sqlpage/templates/home.handlebars'
-    and sqlpage.request_method() = 'POST';
-
-delete from sqlpage_files
-where path = 'sqlpage/templates/post.handlebars'
-    and sqlpage.request_method() = 'POST';
-
-insert into sqlpage_files
-(
-    path
-    , contents
-    , last_modified
-    , created_at
-)
-select
-    'sqlpage/templates/home.handlebars'
-    , :homepage_html
-    , CURRENT_TIMESTAMP
-    , CURRENT_TIMESTAMP
-where
-    sqlpage.request_method() = 'POST';
-
-insert into sqlpage_files
-(
-    path
-    , contents
-    , last_modified
-    , created_at
-)
-select
-    'sqlpage/templates/post.handlebars'
-    , :post_html
-    , CURRENT_TIMESTAMP
-    , CURRENT_TIMESTAMP
-where
-    sqlpage.request_method() = 'POST';
+SELECT
+    'button' as component;
 
 select 
-    'alert' as component
-    , 'Settings Saved' as title
-    , 'blue' as color
-where
-    sqlpage.request_method() = 'POST';
-
-set homepage_html = (
-    select contents from sqlpage_files 
-    where path = 'sqlpage/templates/home.handlebars'
-);
-
-set post_html = (
-    select contents from sqlpage_files 
-    where path = 'sqlpage/templates/post.handlebars'
-);
+    'Create New Template' as title
+    , 'green' as color
+    , 'template/edit' as link
+    , 'plus' as icon;
 
 SELECT
-    'form' as component
-    , 'post' as method;
+    'table' as component
+    , 'template' as markdown
+    , true as sort
+    , 'No templates have been created yet.' as empty_description;
 
 SELECT
-    'textarea' as type
-    , 'Homepage HTML' as label
-    , 'homepage_html' as name
-    , $homepage_html as value;
-
-SELECT
-    'textarea' as type
-    , 'Post HTML' as label
-    , 'post_html' as name
-    , $post_html as value;
+    '[' || case when trim(name) != '' then name else 'No title set' end || '](template/edit?id=' || id || ')' as Template
+FROM 
+    template
+order BY
+    name;

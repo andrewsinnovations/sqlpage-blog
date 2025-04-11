@@ -6,10 +6,6 @@ SELECT
     'dynamic' as component,   
     sqlpage.run_sql('admin/.shell.sql') AS properties;
 
-SELECT
-    'dynamic' as component,   
-    sqlpage.run_sql('admin/settings/.tabs.sql') AS properties;
-
 UPDATE
     settings
 SET

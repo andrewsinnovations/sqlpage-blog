@@ -9,12 +9,6 @@ WHERE
     sqlpage.request_method() = 'GET';
 
 SELECT
-    'dynamic' as component,   
-    sqlpage.run_sql('admin/dashboard/.tabs.sql', json_object('type', coalesce($type, 'post'))) AS properties
-WHERE
-    sqlpage.request_method() = 'GET';
-
-SELECT
     'alert' as component
     , 'red' as color
     , 'You did not confirm the deletion of this post.' as title

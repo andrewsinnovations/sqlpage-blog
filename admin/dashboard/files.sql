@@ -7,10 +7,6 @@ SELECT
     sqlpage.run_sql('admin/.shell.sql') AS properties;
 
 SELECT
-    'dynamic' as component,   
-    sqlpage.run_sql('admin/dashboard/.tabs.sql') AS properties;
-
-SELECT
     'alert' as component
     , 'red' as color
     , 'The supplied file already existed.' as title

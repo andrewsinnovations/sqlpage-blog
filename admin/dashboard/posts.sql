@@ -7,10 +7,6 @@ SELECT
     sqlpage.run_sql('admin/.shell.sql') AS properties;
 
 SELECT
-    'dynamic' as component,   
-    sqlpage.run_sql('admin/dashboard/.tabs.sql') AS properties;
-
-SELECT
     'alert' as component
     , 'blue' as color
     , 'Post deleted successfully.' as title

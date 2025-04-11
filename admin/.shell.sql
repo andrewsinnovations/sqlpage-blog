@@ -1,42 +1,69 @@
+set shell = (
+    SELECT
+        json_set(JSON(sqlpage.read_file_as_text('admin/.shell.json')), '$.title', setting_value) as shell
+    FROM
+        settings
+    WHERE
+        setting_name = 'blog_name'
+);
+
+set shell = (
+    select 
+        json_set(JSON($shell), '$.javascript', json_group_array(value)) as shell
+    from
+    (
+        select 
+            VALUE
+        FROM
+            json_each(JSON($shell) -> 'javascript')
+        
+        union ALL
+
+        SELECT
+            VALUE
+        from
+            json_each(JSON($additional_javascript))
+    ) 
+)
+
+set shell = (
+    select 
+        json_set(JSON($shell), '$.javascript_module', json_group_array(value)) as shell
+    from
+    (
+        select 
+            VALUE
+        FROM
+            json_each(JSON($shell) -> 'javascript_module')
+        
+        union ALL
+
+        SELECT
+            VALUE
+        from
+            json_each(JSON($additional_javascript_module))
+    ) 
+)
+
+set shell = (
+    select 
+        json_set(JSON($shell), '$.css', json_group_array(value)) as shell
+    from
+    (
+        select 
+            VALUE
+        FROM
+            json_each(JSON($shell) -> 'css')
+        
+        union ALL
+
+        SELECT
+            VALUE
+        from
+            json_each(JSON($additional_css))
+    ) 
+)
+
 SELECT
-    'shell' as component
-    , setting_value || ' - Dashboard' as title
-    , '/admin/dashboard/posts' as link
-    , ' ' as footer
-    , 'https://cdn.jsdelivr.net/npm/trumbowyg@2/dist/ui/trumbowyg.min.css' as css
-    , 'https://code.jquery.com/jquery-3.7.1.min.js' as javascript
-    , 'https://cdn.jsdelivr.net/npm/trumbowyg@2/dist/trumbowyg.min.js' as javascript
-    , JSON('{
-        "title": "Posts", 
-        "icon": "list-details",
-        "link": "/admin/dashboard/posts"
-    }') as menu_item
-    , JSON('{
-        "title": "Settings", 
-        "icon": "settings",
-        "link": "/admin/settings/config"
-    }') as menu_item
-    , JSON('{   
-            "icon": "user"
-            ,"title":"User"
-            ,"submenu":[
-                {
-                    "link":"/admin/change_password"
-                    ,"title":"Change Password"
-                    ,"icon":"lock"
-                },
-                {
-                    "type":"divider"
-                },
-                {
-                    "link":"/admin/end_session"
-                    ,"title":"Logout"
-                    ,"icon":"logout"
-                }
-            ]
-        }') as menu_item
-FROM
-    settings
-WHERE
-    setting_name = 'blog_name'
-limit 1;
+    'dynamic' as component
+    , $shell as properties;

@@ -7,10 +7,6 @@ SELECT
     sqlpage.run_sql('admin/.shell.sql') AS properties;
 
 SELECT
-    'dynamic' as component,   
-    sqlpage.run_sql('admin/dashboard/.tabs.sql', json_object('type', coalesce($type, 'post'))) AS properties;
-
-SELECT
     'form' as component
     , 'Save' as validate
     , 'post-form' as id

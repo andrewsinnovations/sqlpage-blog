@@ -1,0 +1,49 @@
+{
+    "component": "shell",
+    "layout": "vertical", 
+    "title": "Dashboard",
+    "footer": " ",
+    "link": "/admin/dashboard/posts",
+    "sidebar": true,
+    "css": [
+        "https://cdn.jsdelivr.net/npm/trumbowyg@2/dist/ui/trumbowyg.min.css",
+        "/admin/assets/site"
+    ],
+    "javascript": [
+        "https://code.jquery.com/jquery-3.7.1.min.js",
+        "https://cdn.jsdelivr.net/npm/trumbowyg@2/dist/trumbowyg.min.js"
+    ],
+    "javascript_module": [],
+    "menu_item": [
+        {
+            "title": "Posts", 
+            "icon": "list-details",
+            "link": "/admin/dashboard/posts"
+        },
+        {
+            "title": "Files", 
+            "icon": "file",
+            "link": "/admin/dashboard/files"
+        },
+        {
+            "title": "Templates", 
+            "icon": "book",
+            "link": "/admin/settings/templates"
+        },
+        {
+            "title": "Settings", 
+            "icon": "settings",
+            "link": "/admin/settings/config"
+        }, 
+        {
+            "link":"/admin/change_password"
+            ,"title":"Change Password"
+            ,"icon":"lock"
+        },
+        {
+            "link":"/admin/end_session"
+            ,"title":"Logout"
+            ,"icon":"logout"
+        }
+    ]
+}
