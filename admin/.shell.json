@@ -3,7 +3,7 @@
     "layout": "vertical", 
     "title": "Dashboard",
     "footer": " ",
-    "link": "/admin/dashboard/posts",
+    "link": "/admin/dashboard",
     "sidebar": true,
     "css": [
         "https://cdn.jsdelivr.net/npm/trumbowyg@2/dist/ui/trumbowyg.min.css",
