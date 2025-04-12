@@ -88,7 +88,7 @@ SELECT
         order by lower(name)
     ) as options
 WHERE
-    $id is null;
+    $id = 'new';
 
 SELECT
     'select' as type
@@ -186,14 +186,3 @@ group BY
     date(created_at)
 order BY
         created_at desc;
-
-SELECT
-    'foldable' as component
-WHERE
-    $id != 'new';
-
-SELECT
-    'Record Actions' as title
-    , '- [Delete Record](delete_post?id=' || $id || ')' as description_md
-WHERE
-    $id != 'new';

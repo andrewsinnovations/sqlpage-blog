@@ -41,6 +41,7 @@ insert into posts (
     , last_modified
     , post_type
     , published
+    , template_id
 )
 SELECT
     :title
@@ -50,6 +51,7 @@ SELECT
     , current_timestamp
     , :type
     , case when $published is not null then 1 else 0 end
+    , :template_id
 WHERE
     :id = 'new';
 
@@ -59,21 +61,7 @@ set post_id = (
 )
 
 set post_contents = (
-    select 'select ''shell-empty'' as component;
-    insert into traffic (post_id, url) values (' || $post_id || ', sqlpage.path());
-    set post = (
-        select json_extract(sqlpage.run_sql(''.post_data.sql'', json_object(''post_id'', ' || $post_id || ')), ''$[0].posts[0]'') as post_data
-    )
-    set settings = (
-        select
-        json_extract(
-            JSON(
-                sqlpage.run_sql(''.settings_data.sql'')
-            )
-            , ''$[0].settings''
-        )
-    );  
-    select ''post'' as component, JSON($post) as post, json($settings) as settings;'
+    select 'select ''dynamic'' as component, sqlpage.run_sql(''.post.sql'') as properties;'
 );
 
 delete from sqlpage_files 
@@ -92,7 +80,9 @@ SELECT
     , $post_contents as contents
     , current_timestamp
     , current_timestamp
-    , $post_id;
+    , $post_id
+WHERE
+    case when $published is not null then 1 else 0 end = 1;
     
 SELECT
     'redirect' as component
@@ -107,6 +97,7 @@ set
     , content = :content
     , last_modified = current_timestamp
     , published = case when $published is not null then 1 else 0 end
+    , template_id = :template_id
 WHERE
     id = :id;
 

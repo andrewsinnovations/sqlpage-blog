@@ -11,11 +11,13 @@ set content = (
         id = $id
 );
 
-update template
-set content = $content
-where id = (
+set template_id = (
     select template_id from template_history where id = $id
 );
+
+update template
+set content = $content
+where id = $template_id;
 
 insert into template_history (
     template_id
@@ -28,6 +30,24 @@ select
     , content
     , name
     , current_timestamp
+FROM
+    template_history
+WHERE
+    id = $id;
+
+-- save the template into sqlpage template system
+delete from sqlpage_files where path = 'sqlpage/templates/template_' || $template_id || '.handlebars';
+insert into sqlpage_files (
+    path
+    , contents
+    , created_at
+    , last_modified
+)
+select
+    'sqlpage/templates/template_' || $template_id || '.handlebars'
+    , $content
+    , current_timestamp
+    , current_timestamp    
 FROM
     template_history
 WHERE

@@ -37,6 +37,6 @@ set settings = (
 
 
 SELECT
-    'home' as component
+    'template_' || (select id from template where name = 'Homepage') as component
     , json($posts) as posts
     , json($settings) as settings;

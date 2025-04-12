@@ -12,7 +12,7 @@ require(["vs/editor/editor.main"], function() {
             automaticLayout: true
         });
 
-        editor.layout({ height: window.innerHeight - 350 });
+        editor.layout({ height: window.innerHeight - 425 });
     }
 
     function createEditor() {

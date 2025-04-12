@@ -50,6 +50,21 @@ set
 WHERE
     $default_for_posts is not null;
 
+-- save the template into sqlpage template system
+delete from sqlpage_files where path = 'sqlpage/templates/template_' || $id || '.handlebars';
+insert into sqlpage_files (
+    path
+    , contents
+    , created_at
+    , last_modified
+)
+values (
+    'sqlpage/templates/template_' || $id || '.handlebars'
+    , $template
+    , current_timestamp
+    , current_timestamp    
+);
+
 select
     'redirect' as component
     , 'edit?id=' || $id || '&saved=1' as link;

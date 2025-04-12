@@ -73,14 +73,3 @@ FROM
     template
 WHERE
     id = $id;
-
-SELECT
-    'foldable' as component
-WHERE
-    $id is not null;
-
-SELECT
-    'Record Actions' as title
-    , '- [Delete Record](delete?id=' || $id || ')' as description_md
-WHERE
-    $id is not null;
