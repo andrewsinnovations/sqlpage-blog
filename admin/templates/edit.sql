@@ -8,9 +8,34 @@ SELECT
         , json_object(
             'shell_title', 'Edit Template',
             'additional_javascript', JSON('["https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs/loader.min.js"]'),
-            'additional_javascript_module', JSON('["/admin/settings/template/edit_script"]')
+            'additional_javascript_module', JSON('["/admin/templates/edit_script"]')
         )
     ) AS properties;
+
+SELECT
+    'breadcrumb' as component;
+
+select 
+    'Home' as title
+    , '/admin/dashboard' as link;
+
+select 
+    'Templates' as title
+    , '/admin/templates' as link;
+
+SELECT
+    'New Template' as title
+    , true as active
+WHERE
+    $id is null;
+
+SELECT
+    name as title
+    , true as active
+FROM
+    template
+WHERE
+    id = $id;
 
 SELECT
     'alert' as component
@@ -20,7 +45,7 @@ WHERE
     $saved is not null;
 
 select 'dynamic' as component
-    , sqlpage.run_sql('admin/settings/template/.tabs.sql') AS properties;
+    , sqlpage.run_sql('admin/templates/.tabs.sql') AS properties;
 
 SELECT
     'form_with_html' as component

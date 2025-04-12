@@ -24,7 +24,7 @@ require(["vs/editor/editor.main"], function() {
     }
 
     if(id) {
-        fetch("/admin/settings/template/content?id=" + id)
+        fetch("/admin/templates/content?id=" + id)
         .then(response => response.text())
         .then(data => {
             setValue(data);

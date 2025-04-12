@@ -4,9 +4,11 @@ select 'status_code' as component
 insert into traffic 
 (
     url
+    , status_code
 ) 
 select 
-    sqlpage.path();
+    sqlpage.path()
+    , 404;
 
 set post = (
     select json_object(

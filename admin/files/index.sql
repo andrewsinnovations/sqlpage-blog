@@ -7,6 +7,18 @@ SELECT
     sqlpage.run_sql('admin/.shell.sql', json_object('shell_title', 'Files')) AS properties;
 
 SELECT
+    'breadcrumb' as component;
+
+select 
+    'Home' as title
+    , '/admin/dashboard' as link;
+
+select 
+    'Files' as title
+    , '/admin/files' as link
+    , true as active;
+
+SELECT
     'alert' as component
     , 'red' as color
     , 'The supplied file already existed.' as title
@@ -21,7 +33,8 @@ WHERE
     $success = 1;
 
 SELECT
-    'button' as component;
+    'button' as component
+    , 'mt-3' as class;
 
 select 
     'Upload New File' as title

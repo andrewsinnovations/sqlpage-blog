@@ -24,4 +24,4 @@ SELECT
 
 SELECT
     'redirect' as component
-    , 'files?success=1' as link;
+    , 'index?success=1' as link;

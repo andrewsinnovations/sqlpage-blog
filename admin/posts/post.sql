@@ -7,6 +7,32 @@ SELECT
     sqlpage.run_sql('admin/.shell.sql', json_object('shell_title', 'Edit Post')) AS properties;
 
 SELECT
+    'breadcrumb' as component;
+
+select 
+    'Home' as title
+    , '/admin/dashboard' as link;
+
+select 
+    'Posts' as title
+    , '/admin/posts' as link;
+
+select 
+    'New Post' as title
+    , true as active
+WHERE
+    $id = 'new';
+
+select 
+    title as title
+    , true as active
+FROM
+    posts
+WHERE
+    id = $id
+    AND $id != 'new';
+
+SELECT
     'alert' as component
     , 'blue' as color
     , 'Your post was saved!' as title

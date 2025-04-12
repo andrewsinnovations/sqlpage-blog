@@ -11,7 +11,7 @@ set template_id = (
 );
 
 select 'dynamic' as component
-    , sqlpage.run_sql('admin/settings/template/.tabs.sql', json_object('id', $template_id)) AS properties;
+    , sqlpage.run_sql('admin/templates/.tabs.sql', json_object('id', $template_id)) AS properties;
 
 select 'breadcrumb' as component;
 

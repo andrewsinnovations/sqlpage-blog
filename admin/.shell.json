@@ -16,24 +16,29 @@
     "javascript_module": [],
     "menu_item": [
         {
+            "title": "Dashboard", 
+            "icon": "graph",
+            "link": "/admin/dashboard"
+        },
+        {
             "title": "Posts", 
             "icon": "list-details",
-            "link": "/admin/dashboard/posts"
+            "link": "/admin/posts"
         },
         {
             "title": "Files", 
             "icon": "file",
-            "link": "/admin/dashboard/files"
+            "link": "/admin/files"
         },
         {
             "title": "Templates", 
             "icon": "book",
-            "link": "/admin/settings/templates"
+            "link": "/admin/templates"
         },
         {
             "title": "Settings", 
             "icon": "settings",
-            "link": "/admin/settings/config"
+            "link": "/admin/settings"
         }, 
         {
             "link":"/admin/change_password"

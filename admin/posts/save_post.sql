@@ -86,7 +86,7 @@ WHERE
     
 SELECT
     'redirect' as component
-    , '/admin/dashboard/post?saved=1&id=' || $post_id as link
+    , '/admin/posts/post?saved=1&id=' || $post_id as link
 WHERE
     :id = 'new';
 
@@ -102,4 +102,4 @@ WHERE
     id = :id;
 
 select 'redirect' as component
-    , '/admin/dashboard/post?saved=1&id=' || :id as link;
+    , '/admin/posts/post?saved=1&id=' || :id as link;

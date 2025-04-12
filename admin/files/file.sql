@@ -7,6 +7,21 @@ SELECT
     sqlpage.run_sql('admin/.shell.sql') AS properties;
 
 SELECT
+    'breadcrumb' as component;
+
+select 
+    'Home' as title
+    , '/admin/dashboard' as link;
+
+select 
+    'Files' as title
+    , '/admin/files' as link;
+
+SELECT
+    'Upload New File' as title
+    , true as active;
+
+SELECT
     'form' as component
     , 'Save' as validate
     , 'post-form' as id

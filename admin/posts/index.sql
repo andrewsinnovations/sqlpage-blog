@@ -14,7 +14,20 @@ WHERE
     $deleted = 1;
 
 SELECT
-    'button' as component;
+    'breadcrumb' as component;
+
+select 
+    'Home' as title
+    , '/admin/dashboard' as link;
+
+select 
+    'Posts' as title
+    , '/admin/posts' as link
+    , true as active;
+
+SELECT
+    'button' as component
+    , 'mt-3' as class;
 
 select 
     'Create New Post' as title
@@ -56,30 +69,3 @@ WHERE
     post_type = 'post'
 order BY
     posts.last_modified desc;
-
-SELECT
-    'chart' as component, 
-    'blue' as color,
-    true as time,
-    'Views' as title;
-
-SELECT
-    date(created_at) as x
-    , count(*) as y
-FROM
-    traffic
-group BY
-    date(created_at);
-
-SELECT
-    'table' as component;
-
-SELECT
-    date(created_at) as "Date"
-    , count(*) as "Views"
-FROM
-    traffic
-group BY
-    date(created_at)
-order BY
-        created_at desc;

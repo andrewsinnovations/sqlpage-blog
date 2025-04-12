@@ -6,25 +6,37 @@ SELECT
     'dynamic' as component,   
     sqlpage.run_sql('admin/.shell.sql'
         , json_object(
-            'shell_title', 'Template History',
-            'additional_javascript', JSON('["https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs/loader.min.js"]'),
-            'additional_javascript_module', JSON('["/admin/settings/template/edit_script"]')
+            'shell_title', 'Template History'
         )
     ) AS properties;
 
-select 'dynamic' as component
-    , sqlpage.run_sql('admin/settings/template/.tabs.sql') AS properties;
+SELECT
+    'breadcrumb' as component;
+
+select 
+    'Home' as title
+    , '/admin/dashboard' as link;
+
+select 
+    'Templates' as title
+    , '/admin/templates' as link;
 
 SELECT
-    'text' as component;
+    'New Template' as title
+    , true as active
+WHERE
+    $id is null;
 
-select
-    5 as size
-    , name as contents
+SELECT
+    name as title
+    , true as active
 FROM
     template
 WHERE
     id = $id;
+
+select 'dynamic' as component
+    , sqlpage.run_sql('admin/templates/.tabs.sql') AS properties;
 
 SELECT
     'table' as component

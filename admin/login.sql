@@ -64,7 +64,7 @@ WHERE
 
 SELECT
     'redirect' as component
-    , '/admin/dashboard/posts' as link
+    , '/admin/dashboard' as link
 WHERE
     sqlpage.request_method() = 'POST';
 

@@ -6,4 +6,4 @@ select 'http_header' as component, 'text/javascript; charset=utf-8' as "Content-
 select 'shell-empty' as component;
 
 select 'html' as component
-, sqlpage.read_file_as_text('admin/settings/template/.edit_script.js') as html;
+, sqlpage.read_file_as_text('admin/templates/.edit_script.js') as html;
