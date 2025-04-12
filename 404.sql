@@ -1,30 +1,40 @@
--- GET Method: Show login form
-SELECT
-    'redirect' as component
-    , '/admin/install' as link
-WHERE
-    not exists (select * from login);
-
 select 'status_code' as component
     , 404 as status;  
 
+insert into traffic 
+(
+    url
+) 
+select 
+    sqlpage.path();
+
+set post = (
+    select json_object(
+            'title', 'Page Not Found',
+            'slug_path', '',
+            'db_path', '',
+            'post_date', '',
+            'content', 'Sorry, the URL you are trying to access was not found.'
+        ) as post_data
+)
+
+set settings = (
+    select
+    json_extract(
+        JSON(
+            sqlpage.run_sql('.settings_data.sql')
+        )
+        , '$[0].settings'
+    )
+);  
+
 select 'shell-empty' as component;
 
-select 'html' as component
-    , setting_value as html
+select 
+    'template_' || id as component
+    , JSON($post) as post
+    , json($settings) as settings
 FROM
-    settings
+    template
 WHERE
-    setting_name = 'before_post';
-
-SELECT
-    'text' as component
-    , '404 - Page Not Found' as title
-    , 'This page was not found.' as contents;
-
-select 'html' as component
-    , setting_value as html
-FROM
-    settings
-WHERE
-    setting_name = 'after_post';
+    post_default = true;
