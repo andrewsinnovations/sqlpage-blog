@@ -32,6 +32,10 @@ set url = (
     end
 )
 
+set default_timezone = (
+    select setting_value from settings where setting_name = 'default_timezone'
+)
+
 set sqlpage_path = $url || '.sql';
 
 insert into posts (
@@ -41,8 +45,9 @@ insert into posts (
     , created_at
     , last_modified
     , post_type
-    , published
+    , published_date
     , template_id
+    , timezone
 )
 SELECT
     :title
@@ -51,8 +56,9 @@ SELECT
     , current_timestamp
     , current_timestamp
     , :type
-    , case when $published is not null then true else false end
+    , case when $published is not null then now() else null end
     , :template_id::int
+    , $default_timezone
 WHERE
     $id is null;
 
@@ -97,8 +103,9 @@ set
     , slug = $slug
     , content = :content
     , last_modified = current_timestamp
-    , published = case when $published is not null then true else false end
+    , published_date = case when $published_date is not null and $published_date != '' then $published_date::timestamp at time zone $timezone else null end
     , template_id = $template_id::int
+    , timezone = $timezone
 WHERE
     id = $post_id::integer;
 

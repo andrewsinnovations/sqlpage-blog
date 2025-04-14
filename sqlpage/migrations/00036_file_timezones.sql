@@ -1,0 +1,2 @@
+alter table uploaded_files alter column created_at type timestamptz using created_at at time zone 'UTC';
+alter table uploaded_files alter column updated_at type timestamptz using created_at at time zone 'UTC';

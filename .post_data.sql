@@ -14,7 +14,8 @@ FROM
             'title', posts.title,
             'slug_path', substr(sqlpage_files.path, 1, length(sqlpage_files.path) - 4),
             'db_path', sqlpage_files.path,
-            'post_date', TO_CHAR(sqlpage_files.last_modified, $date_format),
+            'post_date_last_modified', TO_CHAR(sqlpage_files.last_modified at time zone timezone, $date_format),
+            'post_date', TO_CHAR(posts.published_date at time zone timezone, $date_format),
             'content', posts.content
         ) as post_data
     FROM
@@ -22,7 +23,8 @@ FROM
         inner join posts
             on sqlpage_files.post_id = posts.id
     WHERE
-        $post_id is null or posts.id = $post_id::int
+        ($post_id is null or posts.id = $post_id::int)
+        and posts.published_date is not null
     order BY
-        sqlpage_files.last_modified desc
+        posts.published_date at time zone timezone desc
 ) posts

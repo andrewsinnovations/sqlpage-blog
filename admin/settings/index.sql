@@ -38,6 +38,14 @@ WHERE
     setting_name = 'post_date_format'
     and sqlpage.request_method() = 'POST';
 
+UPDATE
+    settings
+SET
+    setting_value = $default_timezone
+WHERE
+    setting_name = 'default_timezone'
+    and sqlpage.request_method() = 'POST';
+
 SELECT
     'alert' as component
     , 'Blog settings updated.' as title
@@ -99,6 +107,24 @@ FROM
     settings
 WHERE
     setting_name = 'post_routes';
+
+SELECT
+    'select' as type
+    , 'Default Timezone' as label
+    , 'default_timezone' as name
+    , true as required
+    , setting_value as value
+    , (select json_agg(options)
+        from
+        (
+            SELECT json_build_object('label', name, 'value', name) as options
+            FROM pg_timezone_names
+            ORDER BY name
+        ) options) as options
+FROM
+    settings
+WHERE
+    setting_name = 'default_timezone';
 
 SELECT
     'Date Format (Dashboard)' as label

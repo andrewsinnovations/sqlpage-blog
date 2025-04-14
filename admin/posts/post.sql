@@ -4,7 +4,7 @@ SELECT
 
 SELECT
     'dynamic' as component,   
-    sqlpage.run_sql('admin/.shell.sql', json_object('shell_title', 'Edit Post')) AS properties;
+    sqlpage.run_sql('admin/.shell.sql', json_object('shell_title', 'Edit Post', 'additional_javascript', '["/admin/posts/edit_post"]')) AS properties;
 
 SELECT
     'breadcrumb' as component;
@@ -36,9 +36,9 @@ SELECT
     'alert' as component
     , 'blue' as color
     , 'Your post was saved!' as title
-    , case when published = true then '/' || replace(sqlpage_files.path, '.sql', '') else null end as link
+    , case when published_date is not null then '/' || replace(sqlpage_files.path, '.sql', '') else null end as link
     , 'Click here to view your post' as link_text
-    , case when published = false then 'It has not yet been published.' else null end as description
+    , case when published_date is null then 'It has not yet been published.' else null end as description
 FROM
     posts
     left join sqlpage_files on posts.id = sqlpage_files.post_id
@@ -169,7 +169,40 @@ SELECT
     'Published' as label
     , 'checkbox' as type
     , 'published' as name
-    , published as checked
+    , case when published_date is not null then true else false end as checked
+    , 'published' as id
+FROM
+    posts
+WHERE
+     id = $id::int
+     AND $id is not null;
+
+SELECT
+    'Published Date' as label
+    , 'datetime-local' as type
+    , 'published_date' as name
+    , 'published_date' as id
+    , case when published_date is not null then replace(to_char(published_date at time zone timezone, 'YYYY-MM-DD HH24:MI'), ' ', 'T') else null end as value
+FROM
+    posts
+WHERE
+     id = $id::int
+     AND $id is not null;
+
+SELECT
+    'select' as type
+    , 'Timezone' as label
+    , 'timezone' as name
+    , true as required
+    , timezone as value
+    , 'timezone' as id
+    , (select json_agg(options)
+        from
+        (
+            SELECT json_build_object('label', name, 'value', name) as options
+            FROM pg_timezone_names
+            ORDER BY name
+        ) options) as options
 FROM
     posts
 WHERE

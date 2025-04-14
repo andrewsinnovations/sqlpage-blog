@@ -12,6 +12,10 @@ set date_format = (
     where setting_name = 'dashboard_date_format'
 );
 
+set default_timezone = (
+    select setting_value from settings where setting_name = 'default_timezone'
+)
+
 SELECT
     'breadcrumb' as component;
 
@@ -58,7 +62,7 @@ SELECT
 SELECT
     '[' || original_file_name || '](' || path || ')' as title
     , path as url
-    , to_char(created_at, $date_format) as "Uploaded At"
+    , to_char(created_at at time zone $default_timezone, $date_format) as "Uploaded At"
 FROM
     uploaded_files
 order BY

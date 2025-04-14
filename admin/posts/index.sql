@@ -50,11 +50,11 @@ SELECT
 
 SELECT 
     '[' || case when trim(title) != '' then title else 'No title set' end || '](post?id=' || id || ')' as title 
-    , case when posts.published = true then '[' || replace(sqlpage_files.path, '.sql', '') || '](/' || replace(sqlpage_files.path, '.sql', '')  || ')'
+    , case when posts.published_date is not null then '[' || replace(sqlpage_files.path, '.sql', '') || '](/' || replace(sqlpage_files.path, '.sql', '')  || ')'
         else 'Not published' 
     end as url
-    , to_char(posts.last_modified, $date_format)  as "Last Updated"
-    , case when posts.published = true then 'Yes' else 'No' end as Published
+    , to_char(posts.last_modified at time zone timezone, $date_format)  as "Last Updated"
+    , to_char(posts.published_date at time zone timezone, $date_format) as Published
     , coalesce(traffic_data.traffic, 0) as Views
 FROM
     posts

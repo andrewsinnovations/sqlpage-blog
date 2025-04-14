@@ -1,0 +1,1 @@
+alter table posts add timezone varchar(512) default 'UTC';

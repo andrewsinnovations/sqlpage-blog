@@ -1,5 +1,4 @@
 with settings_data as (
-    
 	SELECT
 		json_build_object(
 			'setting', setting_name,
