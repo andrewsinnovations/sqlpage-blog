@@ -34,4 +34,6 @@ $(function() {
     });
 
     hidePublishingDateIfNecessary();
+
+    $('#content').trumbowyg();
 })

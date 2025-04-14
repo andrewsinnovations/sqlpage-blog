@@ -210,16 +210,6 @@ WHERE
      AND $id is not null;
 
 SELECT
-    'html' as component
-    , '<script>
-    document.addEventListener("DOMContentLoaded", () => {
-    
-      // Turn the <textarea> into a Trumbowyg editor
-      const editor = document.getElementById("content");
-      window.$(editor).trumbowyg();
-    });</script>' as html;
-
-SELECT
     'chart' as component, 
     'blue' as color,
     true as time,
