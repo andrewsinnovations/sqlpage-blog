@@ -6,7 +6,7 @@ insert into sqlpage_files (
 )
 SELECT
     'sqlpage/templates/template_' || id || '.handlebars'
-    , content
+    , convert_to(content, 'UTF8')
     , current_timestamp
     , current_timestamp
 FROM

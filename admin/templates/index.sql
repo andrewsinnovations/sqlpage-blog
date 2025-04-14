@@ -19,13 +19,6 @@ select
     , true as active;
 
 SELECT
-    'alert' as component
-    , 'blue' as color
-    , 'Post deleted successfully.' as title
-WHERE
-    $deleted = 1;
-
-SELECT
     'button' as component
     , 'mt-3' as class;
 

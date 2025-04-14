@@ -8,16 +8,16 @@ set content = (
     FROM
         template_history
     WHERE
-        id = $id
+        id = $id::int
 );
 
 set template_id = (
-    select template_id from template_history where id = $id
+    select template_id from template_history where id = $id::int
 );
 
 update template
 set content = $content
-where id = $template_id;
+where id = $template_id::int;
 
 insert into template_history (
     template_id
@@ -33,7 +33,7 @@ select
 FROM
     template_history
 WHERE
-    id = $id;
+    id = $id::int;
 
 -- save the template into sqlpage template system
 delete from sqlpage_files where path = 'sqlpage/templates/template_' || $template_id || '.handlebars';
@@ -45,13 +45,13 @@ insert into sqlpage_files (
 )
 select
     'sqlpage/templates/template_' || $template_id || '.handlebars'
-    , $content
+    , convert_to($content, 'UTF8')
     , current_timestamp
     , current_timestamp    
 FROM
     template_history
 WHERE
-    id = $id;
+    id = $id::int;
 
 select
     'redirect' as component
@@ -59,4 +59,4 @@ select
 FROM
     template_history
 WHERE
-    id = $id;
+    id = $id::int;

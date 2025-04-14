@@ -5,7 +5,7 @@ SELECT
 SELECT
     'dynamic' as component,   
     sqlpage.run_sql('admin/.shell.sql'
-        , json_object(
+        , json_build_object(
             'shell_title', 'Edit Template',
             'additional_javascript', JSON('["https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs/loader.min.js"]'),
             'additional_javascript_module', JSON('["/admin/templates/edit_script"]')
@@ -35,7 +35,7 @@ SELECT
 FROM
     template
 WHERE
-    id = $id;
+    id = $id::int;
 
 SELECT
     'alert' as component
@@ -76,7 +76,7 @@ SELECT
 FROM
     template
 WHERE
-     id = $id;
+     id = $id::int;
 
 SELECT
     'html' as type
@@ -97,4 +97,4 @@ SELECT
 FROM
     template
 WHERE
-    id = $id;
+    id = $id::int;

@@ -5,11 +5,11 @@ SELECT
     'Views' as title;
 
 SELECT
-    date(created_at) as x
+    created_at::date as x
     , count(*) as y
 FROM
     traffic
 WHERE
-    date(created_at) >= date(date('now'), '-30 day')
+    created_at >= (now()::date + interval '-30 day')::date
 group BY
-    date(created_at);
+    created_at::date

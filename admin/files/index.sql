@@ -23,14 +23,14 @@ SELECT
     , 'red' as color
     , 'The supplied file already existed.' as title
 WHERE
-    $already_exists = 1;
+    $already_exists = '1';
 
 SELECT
     'alert' as component
     , 'green' as color
     , 'File uploaded successfully.' as title
 WHERE
-    $success = 1;
+    $success = '1';
 
 SELECT
     'button' as component

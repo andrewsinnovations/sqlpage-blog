@@ -11,7 +11,7 @@ WHERE
     $post_id is null;
 
 set template_id = (
-    select template_id from posts where id = $post_id
+    select template_id from posts where id = $post_id::int
 );
 
 select 
@@ -25,31 +25,18 @@ insert into traffic
     , url
 ) 
 select 
-    $post_id
+    $post_id::int
     , sqlpage.path()
 WHERE
     $post_id is not null;
 
 set post = (
-    select 
-        json_extract(
-            coalesce(sqlpage.run_sql(
-                '.post_data.sql'
-            ), '{}'),
-        '$[0].posts[0]'
-        ) as post_data
-        where $post_id is not null
-)
+    select (sqlpage.run_sql('.post_data.sql')::jsonb) -> 0 -> 'posts' -> 0
+);
 
 set settings = (
-    select
-    json_extract(
-        JSON(
-            sqlpage.run_sql('.settings_data.sql')
-        )
-        , '$[0].settings'
-    )
-);  
+    select (sqlpage.run_sql('.settings_data.sql')::jsonb) -> 0 -> 'settings'
+);
 
 select 
     'template_' || $template_id as component

@@ -1,5 +1,5 @@
 create table template (
-    id integer primary key,
+    id serial primary key,
     name text not null,
     content text not null,
     created_at timestamp default current_timestamp,

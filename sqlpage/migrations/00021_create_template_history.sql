@@ -1,5 +1,5 @@
 create table template_history (
-    id integer primary key,
+    id serial primary key,
     name text not null,
     content text not null,
     template_id integer not null,

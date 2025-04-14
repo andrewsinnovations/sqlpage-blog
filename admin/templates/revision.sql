@@ -7,7 +7,7 @@ SELECT
     sqlpage.run_sql('admin/.shell.sql', json_object('shell_title', 'Template History')) as properties;
 
 set template_id = (
-    select template_id from template_history where id = $id
+    select template_id from template_history where id = $id::int
 );
 
 select 'dynamic' as component
@@ -23,7 +23,7 @@ FROM
     inner join template
         on template.id = template_history.template_id
 WHERE
-    template_history.id = $id;
+    template_history.id = $id::int;
 
 select 
     'Revision ' || template_history.created_at as title
@@ -31,7 +31,7 @@ select
 FROM                        
     template_history
 WHERE
-    template_history.id = $id;
+    template_history.id = $id::int;
 
 select 
     'button' as component, 'mt-2' as class;
@@ -41,7 +41,7 @@ select 'Restore This Version' as title
     , 'green' as color
     , 'restore?id=' || $id as link
 WHERE
-    $id != (
+    $id::int != (
         select 
             max(template_history.id) 
         from 
@@ -50,7 +50,7 @@ WHERE
             template_history.template_id = (
                 select template_id 
                 from template_history
-                where id = $id
+                where id = $id::int
             ) 
     )
 
@@ -62,4 +62,4 @@ SELECT
 FROM
     template_history
 WHERE
-    id = $id;   
+    id = $id::int;   

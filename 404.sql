@@ -11,7 +11,7 @@ select
     , 404;
 
 set post = (
-    select json_object(
+    select json_build_object(
             'title', 'Page Not Found',
             'slug_path', '',
             'db_path', '',
@@ -21,14 +21,8 @@ set post = (
 )
 
 set settings = (
-    select
-    json_extract(
-        JSON(
-            sqlpage.run_sql('.settings_data.sql')
-        )
-        , '$[0].settings'
-    )
-);  
+    select (sqlpage.run_sql('.settings_data.sql')::jsonb) -> 0 -> 'settings'
+);
 
 select 'shell-empty' as component;
 

@@ -50,8 +50,8 @@ insert into session (
 )
 select
     $session_id
-    , $login_id
-    , datetime(current_timestamp,  '+30 days')
+    , $login_id::int
+    , now() + interval '+30 days'
 WHERE
     sqlpage.request_method() = 'POST';
 

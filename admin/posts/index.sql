@@ -11,7 +11,7 @@ SELECT
     , 'blue' as color
     , 'Post deleted successfully.' as title
 WHERE
-    $deleted = 1;
+    $deleted = '1';
 
 SELECT
     'breadcrumb' as component;
@@ -32,7 +32,7 @@ SELECT
 select 
     'Create New Post' as title
     , 'green' as color
-    , 'post?id=new&type=post' as link
+    , 'post?type=post' as link
     , 'plus' as icon;
 
 SELECT
@@ -47,7 +47,7 @@ SELECT
     , case when posts.published = true then '[' || replace(sqlpage_files.path, '.sql', '') || '](/' || replace(sqlpage_files.path, '.sql', '')  || ')'
         else 'Not published' 
     end as url
-    , posts.last_modified as `Last Updated`
+    , posts.last_modified as "Last Updated"
     , case when posts.published = true then 'Yes' else 'No' end as Published
     , coalesce(traffic_data.traffic, 0) as Views
 FROM
@@ -58,11 +58,11 @@ FROM
     ) traffic_data
         on posts.id = traffic_data.post_id
     left join (
-        select post_id, count(*) as traffic from traffic where created_at >= date('now', '-1 day') group by post_id
+        select post_id, count(*) as traffic from traffic where created_at >= now()::date + interval '-1 day' group by post_id
     ) traffic_data_today
         on posts.id = traffic_data_today.post_id
     left join (
-        select post_id, count(*) as traffic from traffic where created_at >= date('now', '-30 day') group by post_id
+        select post_id, count(*) as traffic from traffic where created_at >= now()::date + interval '-30 day' group by post_id
     ) traffic_data_last_30
         on posts.id = traffic_data_last_30.post_id
 WHERE

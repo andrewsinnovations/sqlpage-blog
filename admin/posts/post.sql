@@ -21,7 +21,7 @@ select
     'New Post' as title
     , true as active
 WHERE
-    $id = 'new';
+    $id is null;
 
 select 
     title as title
@@ -29,8 +29,8 @@ select
 FROM
     posts
 WHERE
-    id = $id
-    AND $id != 'new';
+    id = $id::int
+    AND $id is not null;
 
 SELECT
     'alert' as component
@@ -43,8 +43,8 @@ FROM
     posts
     left join sqlpage_files on posts.id = sqlpage_files.post_id
 WHERE
-    $saved = 1
-    AND id = $id;
+    $saved = '1'
+    AND id = $id::int;
 
 SELECT
     'form_with_html' as component
@@ -56,14 +56,16 @@ SELECT
 SELECT
     'hidden' as type
     , 'id' as name
-    , $id as value;
+    , $id as value
+WHERE
+    $id is not null;
 
 SELECT
     'hidden' as type
     , 'type' as name
     , coalesce($type, 'post') as value
 WHERE
-    $id = 'new';
+    $id is null;
 
 SELECT
     'hidden' as type
@@ -72,15 +74,15 @@ SELECT
 FROM
    posts
 WHERE
-    id = $id
-    AND $id != 'new';
+    id = $id::int
+    AND $id is not null;
 
 SELECT
     'title' as name
     , 'Title' as label
     , true as required
 WHERE
-    $id = 'new';
+    $id is null;
 
 SELECT
     'title' as name
@@ -90,8 +92,8 @@ SELECT
 FROM
     posts
 WHERE
-     id = $id
-     AND $id != 'new';
+     id = $id::int
+     AND $id is not null;
 
 SELECT
     'Slug' as label
@@ -100,8 +102,8 @@ SELECT
 FROM
     posts
 WHERE
-     id = $id
-     AND $id != 'new';
+     id = $id::int
+     AND $id is not null;
 
 SELECT
     'select' as type
@@ -109,12 +111,15 @@ SELECT
     , 'template_id' as name
     , (select id from template where post_default = true) as value
     , (
-        select json_group_array(json_object('value', id, 'label', name))
-        from template
-        order by lower(name)
+        select json_agg(value) 
+		from (
+			select json_build_object('value', id, 'label', name) as value
+        	from template
+			order by name
+		)
     ) as options
 WHERE
-    $id = 'new';
+    $id is null;
 
 SELECT
     'select' as type
@@ -122,20 +127,23 @@ SELECT
     , 'template_id' as name
     , template_id as value
     , (
-        select json_group_array(json_object('value', id, 'label', name))
-        from template
-        order by lower(name)
+        select json_agg(value) 
+		from (
+			select json_build_object('value', id, 'label', name) as value
+        	from template
+			order by name
+		)
     ) as options
 FROM
     posts
 WHERE
-    id = $id;
+    id = $id::int;
 
 SELECT
     'html' as type
     , '<div id="content" placeholder="Your new content goes here!"></div>' as html
 WHERE
-    $id = 'new';
+    $id is null;
 
 SELECT
     'html' as type
@@ -143,8 +151,8 @@ SELECT
 FROM
     posts
 WHERE
-     id = $id
-     AND $id != 'new';
+     id = $id::int
+     AND $id is not null;
 
 SELECT
     'html' as type
@@ -155,18 +163,18 @@ SELECT
     , 'checkbox' as type
     , 'published' as name
 WHERE
-    $id = 'new';
+    $id is null;
 
 SELECT
     'Published' as label
     , 'checkbox' as type
     , 'published' as name
-    , case when published = 1 then true else 0 end as checked
+    , published as checked
 FROM
     posts
 WHERE
-     id = $id
-     AND $id != 'new';
+     id = $id::int
+     AND $id is not null;
 
 SELECT
     'html' as component
@@ -184,31 +192,31 @@ SELECT
     true as time,
     'Views' as title
 WHERE
-    $id != 'new';
+    $id is not null;
 
 SELECT
-    date(created_at) as x
+    created_at::date as x
     , count(*) as y
 FROM
     traffic
 WHERE
-    post_id = $id
-    and $id != 'new'
+    post_id = $id::int
 group BY
-    date(created_at);
+    created_at::date;
 
 SELECT
-    'table' as component;
+    'table' as component
+WHERE
+    $id is not null;
 
 SELECT
-    date(created_at) as "Date"
+    created_at::date as "Date"
     , count(*) as "Views"
 FROM
     traffic
 WHERE
-    post_id = $id
-    and $id != 'new'
+    post_id = $id::int
 group BY
-    date(created_at)
+    created_at::date
 order BY
-        created_at desc;
+    created_at::date desc;

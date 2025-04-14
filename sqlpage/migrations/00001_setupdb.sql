@@ -1,5 +1,5 @@
 create table sqlpage_files (
-    id integer primary key,
+    id serial primary key,
     path text not null,
     content text not null,
     blog_contents text not null,

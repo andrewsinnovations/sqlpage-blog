@@ -4,4 +4,4 @@ SELECT
 
 select 'shell-empty' as component;
 
-select 'html' as component, content as html from template where id = $id;
+select 'html' as component, content as html from template where id = $id::int;

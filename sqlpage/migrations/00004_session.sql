@@ -1,5 +1,5 @@
 create table session(
-    id integer primary key,
+    id serial primary key,
     session_id text not null,
     login_id integer not null,
     expires_at timestamp not null,

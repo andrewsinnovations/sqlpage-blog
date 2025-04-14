@@ -1,7 +1,7 @@
 alter table sqlpage_files drop column blog_contents;
 
 create table posts(
-    id integer primary key,
+    id serial primary key,
     title text not null,
     content text not null,
     published_date timestamp not null default current_timestamp,

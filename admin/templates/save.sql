@@ -10,8 +10,7 @@ set
     , updated_at = current_timestamp
 where 
     $id is not null
-    and $id != ''
-    and id = $id;
+    and id = $id::int;
 
 insert into template
 (
@@ -27,7 +26,7 @@ WHERE
     $id is null;
 
 set id = (
-    select case when $id is null or $id = '' then last_insert_rowid() else cast($id as integer) end
+    select case when $id is null or $id = '' then currval('template_id_seq') else cast($id as integer) end
 ) 
 
 insert into template_history (
@@ -37,7 +36,7 @@ insert into template_history (
     , name
 )
 values (
-    $id
+    $id::int
     , current_timestamp
     , $template
     , $name
@@ -46,7 +45,7 @@ values (
 -- set post default if supplied
 update template 
 set 
-    post_default = case when id = $id then true else false end
+    post_default = case when id = $id::int then true else false end
 WHERE
     $default_for_posts is not null;
 
@@ -60,7 +59,7 @@ insert into sqlpage_files (
 )
 values (
     'sqlpage/templates/template_' || $id || '.handlebars'
-    , $template
+    , convert_to($template, 'UTF8')
     , current_timestamp
     , current_timestamp    
 );

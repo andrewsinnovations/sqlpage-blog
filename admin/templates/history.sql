@@ -33,7 +33,7 @@ SELECT
 FROM
     template
 WHERE
-    id = $id;
+    id = $id::int;
 
 select 'dynamic' as component
     , sqlpage.run_sql('admin/templates/.tabs.sql') AS properties;
@@ -51,7 +51,7 @@ with revisions as (
     FROM
         template_history
     WHERE
-        template_id = $id
+        template_id = $id::int
     order BY
         created_at DESC
 ),

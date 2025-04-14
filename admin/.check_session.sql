@@ -1,6 +1,6 @@
 set session_data = (
     select
-        json_object(
+        json_build_object(
             'session_id', session_id
             , 'login_id', login_id
         ) as session_data

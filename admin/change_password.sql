@@ -18,7 +18,7 @@ set password_hash = (
     FROM
         login
     WHERE
-        id = $user_id
+        id = $user_id::int
         and sqlpage.request_method() = 'POST'
 );
 
@@ -43,7 +43,7 @@ update
 SET
     password_hash = sqlpage.hash_password($password)
 WHERE
-    id = $user_id
+    id = $user_id::int
     and sqlpage.request_method() = 'POST';
 
 set changed = case when sqlpage.request_method() = 'POST' then 1 else 0 end;
@@ -58,7 +58,7 @@ select
     , 'green' as color
     , 'check' as icon
 where
-    $changed = 1;
+    $changed = '1';
 
 SELECT
     'alert' as component
@@ -69,7 +69,7 @@ SELECT
     , true as dismissible
 where
     $invalid is not null
-    and $changed = 0;
+    and $changed = '0';
 
 SELECT
     'alert' as component
@@ -80,7 +80,7 @@ SELECT
     , true as dismissible
 where
     $no_match is not null
-    and $changed = 0;
+    and $changed = '0';
 
 SELECT
     'form' as component

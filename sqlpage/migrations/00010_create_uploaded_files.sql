@@ -1,7 +1,7 @@
 create table uploaded_files (
-    id integer primary key autoincrement,
+    id serial primary key,
     path text not null,
-    contents blob not null,
-    created_at datetime default current_timestamp,
-    updated_at datetime default current_timestamp
+    contents text not null,
+    created_at timestamp default current_timestamp,
+    updated_at timestamp default current_timestamp
 )

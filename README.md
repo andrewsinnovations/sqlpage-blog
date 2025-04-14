@@ -2,6 +2,10 @@
 A basic blog application built using SQLPage (www.sql-page.com)
 
 # Installation
-Defaults to using sqlite database.
+Requires a postgres database. Set the postgres database URL following .env.example.
 
-Just start up the app using sqlite, and access the page. You will be automatically directed to an installation process.
+There is a docker compose file to start up a postgres database for local development.
+
+Set the propert environment variables and start the app by running sqlpage.
+
+Access the homepage once sta. You will be automatically directed to an installation process.

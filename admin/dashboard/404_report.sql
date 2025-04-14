@@ -5,12 +5,12 @@ SELECT
     '404 Errors' as title;
 
 SELECT
-    date(created_at) as x
+    created_at::date as x
     , count(*) as y
 FROM
     traffic
 WHERE
     status_code = 404
-    and date(created_at) >= date(date('now'), '-30 day')
+    and created_at >= now()::date + interval '-30 day'
 group BY
-    date(created_at);
+    created_at::date

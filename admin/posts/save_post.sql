@@ -2,7 +2,7 @@ SELECT
     'dynamic' as component,   
     sqlpage.run_sql('admin/.check_session.sql') AS properties; 
  
- set slug = (
+set slug = (
     select lower(value) from (
         select replace(value, '.', '') as value from (
         select replace(value, '--', '-') as value FROM
@@ -16,18 +16,19 @@ SELECT
         )
         )
     )
-);
+); 
 
 set post_routes = (
     select setting_value from settings where setting_name = 'post_routes'
 );
 
 set url = (
-    select case when $post_routes = 'ymd_slug' then strftime('%Y/%m/%d/', current_timestamp) ||  $slug 
-        when $post_routes = 'ym_slug' then strftime('%Y/%m/', current_timestamp) || $slug 
-        when $post_routes = 'y_slug' then strftime('%Y/', current_timestamp) || $slug 
-        when $post_routes = 'date_slug' then strftime('%Y%m%d/', current_timestamp) || $slug 
-        when $post_routes = 'slug' then $slug 
+    select case 
+        WHEN $post_routes = 'ymd_slug' THEN to_char(CURRENT_TIMESTAMP, 'YYYY/MM/DD/') || $slug
+        WHEN $post_routes = 'ym_slug' THEN to_char(CURRENT_TIMESTAMP, 'YYYY/MM/') || $slug
+        WHEN $post_routes = 'y_slug' THEN to_char(CURRENT_TIMESTAMP, 'YYYY/') || $slug
+        WHEN $post_routes = 'date_slug' THEN to_char(CURRENT_TIMESTAMP, 'YYYYMMDD/') || $slug
+        WHEN $post_routes = 'slug' THEN $slug
     end
 )
 
@@ -50,14 +51,14 @@ SELECT
     , current_timestamp
     , current_timestamp
     , :type
-    , case when $published is not null then 1 else 0 end
-    , :template_id
+    , case when $published is not null then true else false end
+    , :template_id::int
 WHERE
-    :id = 'new';
+    $id is null;
 
 -- sanitize the submitted ID
 set post_id = (
-    select case when :id = 'new' then last_insert_rowid() else cast(:id as integer) end
+    select case when $id is null then currval('posts_id_seq')::text else $id::text end
 )
 
 set post_contents = (
@@ -77,10 +78,10 @@ insert into sqlpage_files (
 )
 SELECT
     $sqlpage_path
-    , $post_contents as contents
+    , convert_to(coalesce($post_contents, ''), 'UTF8') as contents
     , current_timestamp
     , current_timestamp
-    , $post_id
+    , $post_id::int
 WHERE
     case when $published is not null then 1 else 0 end = 1;
     
@@ -88,18 +89,18 @@ SELECT
     'redirect' as component
     , '/admin/posts/post?saved=1&id=' || $post_id as link
 WHERE
-    :id = 'new';
+    $id is null;
 
 update posts
 set
-    title = :title
+    title = $title
     , slug = $slug
     , content = :content
     , last_modified = current_timestamp
-    , published = case when $published is not null then 1 else 0 end
-    , template_id = :template_id
+    , published = case when $published is not null then true else false end
+    , template_id = $template_id::int
 WHERE
-    id = :id;
+    id = $post_id::integer;
 
 select 'redirect' as component
-    , '/admin/posts/post?saved=1&id=' || :id as link;
+    , '/admin/posts/post?saved=1&id=' || $id as link;

@@ -1,13 +1,14 @@
+--select '[]' as posts;
 SELECT
-    json_group_array(post_data) as posts
+    json_agg(post_data) as posts
 FROM
 (
     SELECT
-        json_object(
+        json_build_object(
             'title', posts.title,
             'slug_path', substr(sqlpage_files.path, 1, length(sqlpage_files.path) - 4),
             'db_path', sqlpage_files.path,
-            'post_date', CASE strftime('%m', sqlpage_files.last_modified)
+            'post_date', case TO_CHAR(sqlpage_files.last_modified, 'MM')
                     WHEN '01' THEN 'January'
                     WHEN '02' THEN 'February'
                     WHEN '03' THEN 'March'
@@ -20,7 +21,7 @@ FROM
                     WHEN '10' THEN 'October'
                     WHEN '11' THEN 'November'
                     WHEN '12' THEN 'December'
-                END || ' ' || strftime('%d, %Y', sqlpage_files.last_modified)
+                END || ' ' || to_char(sqlpage_files.last_modified, 'DD, YY')
             , 'content', posts.content
         ) as post_data
     FROM
@@ -28,7 +29,7 @@ FROM
         inner join posts
             on sqlpage_files.post_id = posts.id
     WHERE
-        $post_id is null or posts.id = $post_id
+        $post_id is null or posts.id = $post_id::int
     order BY
         sqlpage_files.last_modified desc
 ) posts
