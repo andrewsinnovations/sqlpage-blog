@@ -1,4 +1,8 @@
 SELECT
+    'dynamic' as component,   
+    sqlpage.run_sql('admin/.check_session.sql') AS properties;
+
+SELECT
     'chart' as component, 
     'blue' as color,
     true as time,
@@ -10,6 +14,7 @@ SELECT
 FROM
     traffic
 WHERE
-    created_at >= (now()::date + interval '-30 day')::date
+    status_code = 200
+    and created_at >= (now()::date + interval '-30 day')::date
 group BY
     created_at::date

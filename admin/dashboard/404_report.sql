@@ -1,4 +1,8 @@
 SELECT
+    'dynamic' as component,   
+    sqlpage.run_sql('admin/.check_session.sql') AS properties;
+
+SELECT
     'chart' as component, 
     'red' as color,
     true as time,
