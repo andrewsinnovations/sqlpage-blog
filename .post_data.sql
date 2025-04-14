@@ -21,7 +21,7 @@ FROM
                     WHEN '10' THEN 'October'
                     WHEN '11' THEN 'November'
                     WHEN '12' THEN 'December'
-                END || ' ' || to_char(sqlpage_files.last_modified, 'DD, YY')
+                END || ' ' || to_char(sqlpage_files.last_modified, 'DD, YYYY')
             , 'content', posts.content
         ) as post_data
     FROM
