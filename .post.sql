@@ -1,6 +1,6 @@
 set search_path = substr(lower(sqlpage.path()) || '.sql', 2);
 
-set post_id = (
+set single_post_id = (
     select post_id from sqlpage_files where lower(path) = $search_path
 )
 
@@ -8,16 +8,16 @@ SELECT
     'dynamic' as component
     , sqlpage.run_sql('404.sql') as properties
 WHERE
-    $post_id is null;
+    $single_post_id is null;
 
 set template_id = (
-    select template_id from posts where id = $post_id::int
+    select template_id from posts where id = $single_post_id::int
 );
 
 select 
     'shell-empty' as component
 WHERE
-    $post_id is not null;
+    $single_post_id is not null;
 
 insert into traffic 
 (
@@ -25,10 +25,10 @@ insert into traffic
     , url
 ) 
 select 
-    $post_id::int
+    $single_post_id::int
     , sqlpage.path()
 WHERE
-    $post_id is not null;
+    $single_post_id is not null;
 
 set post = (
     select (sqlpage.run_sql('.post_data.sql')::jsonb) -> 0 -> 'posts' -> 0
@@ -48,4 +48,4 @@ select
     , JSON($posts) as posts
     , json($settings) as settings
 WHERE
-    $post_id is not null;
+    $single_post_id is not null;
