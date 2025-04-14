@@ -2,6 +2,12 @@ SELECT
     'dynamic' as component,   
     sqlpage.run_sql('admin/.check_session.sql') AS properties;
 
+set date_format = (
+    select coalesce(setting_value, 'MM/DD/YYYY')
+    from settings
+    where setting_name = 'dashboard_date_format'
+);
+
 SELECT
     'dynamic' as component,   
     sqlpage.run_sql('admin/.shell.sql'
@@ -68,7 +74,7 @@ SELECT
     end || 
     case when revision = last_revision then ' - Current Version' else '' end ||
     '](revision?id=' || id || ')' as version
-    , created_at as date
+    , to_char(created_at, $date_format) as "Created At"
     , name    
 FROM
     revisions, special_revisions

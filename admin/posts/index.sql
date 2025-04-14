@@ -6,6 +6,12 @@ SELECT
     'dynamic' as component,   
     sqlpage.run_sql('admin/.shell.sql', json_object('shell_title', 'Posts')) AS properties;
 
+set date_format = (
+    select coalesce(setting_value, 'MM/DD/YYYY')
+    from settings
+    where setting_name = 'dashboard_date_format'
+);
+
 SELECT
     'alert' as component
     , 'blue' as color
@@ -47,7 +53,7 @@ SELECT
     , case when posts.published = true then '[' || replace(sqlpage_files.path, '.sql', '') || '](/' || replace(sqlpage_files.path, '.sql', '')  || ')'
         else 'Not published' 
     end as url
-    , posts.last_modified as "Last Updated"
+    , to_char(posts.last_modified, $date_format)  as "Last Updated"
     , case when posts.published = true then 'Yes' else 'No' end as Published
     , coalesce(traffic_data.traffic, 0) as Views
 FROM

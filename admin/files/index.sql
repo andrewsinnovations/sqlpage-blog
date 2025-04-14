@@ -6,6 +6,12 @@ SELECT
     'dynamic' as component,   
     sqlpage.run_sql('admin/.shell.sql', json_object('shell_title', 'Files')) AS properties;
 
+set date_format = (
+    select coalesce(setting_value, 'MM/DD/YYYY')
+    from settings
+    where setting_name = 'dashboard_date_format'
+);
+
 SELECT
     'breadcrumb' as component;
 
@@ -52,7 +58,7 @@ SELECT
 SELECT
     '[' || original_file_name || '](' || path || ')' as title
     , path as url
-    , created_at
+    , to_char(created_at, $date_format) as "Uploaded At"
 FROM
     uploaded_files
 order BY
