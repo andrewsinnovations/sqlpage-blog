@@ -23,7 +23,10 @@ FROM
         inner join posts
             on sqlpage_files.post_id = posts.id
     WHERE
-        ($post_id is null or posts.id = $post_id::int)
+        (
+            $all_posts::bool = true
+            or posts.id = $post_id::int
+        )
         and posts.published_date is not null
         and posts.published_date at time zone 'UTC' < now()
     order BY

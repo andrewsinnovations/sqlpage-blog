@@ -10,7 +10,7 @@ values ('/');
 select 'shell-empty' as component;
 
 set posts = (
-    select (sqlpage.run_sql('.post_data.sql')::jsonb) -> 0 -> 'posts'
+    select (sqlpage.run_sql('.post_data.sql', json_build_object('all_posts', 'true'))::jsonb) -> 0 -> 'posts'
 );
 
 set settings = (
