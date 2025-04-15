@@ -36,4 +36,28 @@ $(function() {
     hidePublishingDateIfNecessary();
 
     $('#content').trumbowyg();
+
+    $('#revise_post').on('click', function() {
+        let content = $('#content').trumbowyg('html');
+        $(this).text('Please wait...');
+        let button = $(this);
+        button.prop('disabled', 'disabled');
+
+        fetch('/admin/posts/ai_edit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: "request=" + encodeURIComponent(content)
+        }).then(response => {
+            response.json().then(data => {
+                $('#content').trumbowyg('html', data.revision);
+                
+                button.prop('disabled', null);
+                button.text('Revise With AI');
+            });
+        }).catch(error => {
+            alert('Sorry, the AI revision did not succeed.');
+        });
+    });
 })

@@ -154,6 +154,10 @@ WHERE
      id = $id::int
      AND $id is not null;
 
+select
+    'html' as type
+    , '<button type="button" class="btn btn-secondary mt-3" id="revise_post">Revise With AI</button>' as html;
+
 SELECT
     'html' as type
     , '<hr/>' as html;
