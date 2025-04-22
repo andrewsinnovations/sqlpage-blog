@@ -1,3 +1,5 @@
 uploads
 sqlpage/sqlpage.db
 .env
+.env.keys
+sqlpage/https
