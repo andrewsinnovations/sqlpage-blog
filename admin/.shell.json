@@ -26,6 +26,11 @@
             "link": "/admin/posts"
         },
         {
+            "title": "Pages", 
+            "icon": "files",
+            "link": "/admin/pages"
+        },        
+        {
             "title": "Files", 
             "icon": "file",
             "link": "/admin/files"

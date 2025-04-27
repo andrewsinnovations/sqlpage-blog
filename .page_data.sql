@@ -27,7 +27,7 @@ FROM
             $all_posts::bool = true
             or posts.id = $post_id::int
         )
-        and posts.post_type = 'post'
+        and posts.post_type in ('page-html', 'page-templated')
         and posts.published_date is not null
         and posts.published_date at time zone 'UTC' < now()
     order BY

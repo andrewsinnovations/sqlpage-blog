@@ -13,7 +13,7 @@ set request = json_build_object(
         'Authorization', 'Bearer ' || sqlpage.environment_variable('openai_api_key')
     ),
     'body', json_build_object(
-        'model', 'gpt-4-1106-preview',
+        'model', 'gpt-4.1-mini',
         'messages', json_build_array(
             json_build_object(
                 'role', 'system',

@@ -15,7 +15,7 @@ set additional_css = (
 set shell = (
     SELECT
         jsonb_set(sqlpage.read_file_as_text('admin/.shell.json')::jsonb, '{title}', ('"' || setting_value || 
-            case when 'Title' is not null then ' - ' || 'Title' else '' end
+            case when setting_value is not null then ' - ' || setting_value else '' end
         || '"')::jsonb)  as shell
     FROM
         settings
