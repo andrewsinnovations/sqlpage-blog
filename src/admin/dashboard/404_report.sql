@@ -18,3 +18,5 @@ WHERE
     and created_at >= now()::date + interval '-30 day'
 group BY
     created_at::date
+order by 
+    created_at::date;

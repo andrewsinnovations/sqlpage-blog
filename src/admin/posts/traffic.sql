@@ -52,6 +52,8 @@ FROM
 WHERE
     post_id = $id::int
 group BY
+    created_at::date
+order by 
     created_at::date;
 
 SELECT
