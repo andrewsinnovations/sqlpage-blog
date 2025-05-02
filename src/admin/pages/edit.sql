@@ -7,10 +7,20 @@ SELECT
     sqlpage.run_sql('admin/.shell.sql'
         , json_build_object(
             'shell_title', 'Edit Template',
-            'additional_javascript', JSON('["https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs/loader.min.js"]'),
-            'additional_javascript_module', JSON('["/admin/pages/edit_script"]')
+            'additional_javascript', 
+                case when post_type = 'page-html' then JSON('["https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs/loader.min.js"]')
+                    else JSON('["/admin/pages/edit_script_templated"]')
+                end,
+            'additional_javascript_module', 
+                case when post_type = 'page-html' then JSON('["/admin/pages/edit_script"]')
+                    else JSON('[]')
+                end
         )
-    ) AS properties;
+    ) AS properties
+FROM
+    posts
+WHERE
+     id = $id::int;
 
 SELECT
     'breadcrumb' as component;
@@ -64,7 +74,22 @@ WHERE
 
 SELECT
     'html' as type
-    , '<div id="html-content" style="width:100%;border:1px solid #aaa;"></div><div class="m-3"></div>' as html;
+    , '<div id="html-content" style="width:100%;border:1px solid #aaa;"></div><div class="m-3"></div>' as html
+FROM
+    posts
+WHERE
+     id = $id::int
+     and post_type = 'page-html';
+
+
+SELECT
+    'html' as type
+    , '<div id="content" placeholder="Your new content goes here!">' || content || '</div>' as html
+FROM
+    posts
+WHERE
+     id = $id::int
+     and post_type = 'page-templated';
 
 SELECT
     'Publish Immediately' as label
