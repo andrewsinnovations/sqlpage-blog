@@ -60,7 +60,7 @@ set settings = (
 
 select 
     'page_' || $post_id as component
-    , JSON($post) as post
+    , JSON($post) as page
     , JSON($posts) as posts
     , json($settings) as settings
 WHERE

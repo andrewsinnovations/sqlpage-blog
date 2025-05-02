@@ -141,3 +141,26 @@ FROM
 WHERE
      id = $id::int
      AND $id is not null;
+
+SELECT
+    'html' as component,
+    '<div class="ps-4"><p>Below are the binding values for supplied for your templates:</p><ul>
+  <li><code>page</code> - An object containing information about the post.
+  <ul>
+    <li><code>post_date</code> - The publication date of the page.</li>
+    <li><code>title</code> - The title of the page.</li>
+    <li><code>slug_path</code> - The URL from the root of the page.</li>
+    <li><code>post_date_last_modified</code> - The date of last modification (not publication) of the page.</li>
+    <li><code>content</code> - The HTML content of the page.</li>
+  </ul>
+  </li>
+  <li><code>posts</code> - An array of all published posts sorted by publication date descending, using the schema of the <code>post</code> object above.</li>
+  <li><code>settings</code> - An object containing the site settings.
+  <ul>
+    <li><code>blog_name</code> - The name of the site.</li>
+    <li><code>site_description</code> - The description of the site.</li>
+    <li><code>default_timezone</code> - The configured timezone.</li>
+  </ul>
+  </li>
+</ul></div>
+' as html;
