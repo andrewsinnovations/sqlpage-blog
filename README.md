@@ -6,6 +6,7 @@ Requires a postgres database. Set the postgres database URL following .env.examp
 
 There is a docker compose file to start up a postgres database for local development.
 
-Set the propert environment variables and start the app by running sqlpage.
+Set the proper environment variables and start the app by running sqlpage.
 
-Access the homepage once sta. You will be automatically directed to an installation process.
+To set up your blog after beginning sqlpage, access https://yourdomain/admin/install
+
