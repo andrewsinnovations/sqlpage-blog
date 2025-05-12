@@ -1,0 +1,22 @@
+{
+    "SQL-Formatter-VSCode.paramTypes": {
+        // allow parameters that match like "$param" which is what sqlpage uses
+        "custom": [
+            {
+                "regex": "\\$\\w+"
+            }
+        ]
+    },
+    "SQL-Formatter-VSCode.dialect": "postgresql",
+    "editor.formatOnSave": true,
+    "SQL-Formatter-VSCode.dataTypeCase": "lower",
+    "SQL-Formatter-VSCode.functionCase": "lower",
+    "SQL-Formatter-VSCode.identifierCase": "lower",
+    "SQL-Formatter-VSCode.keywordCase": "upper",
+    "SQL-Formatter-VSCode.linesBetweenQueries": 3,
+    "SQL-Formatter-VSCode.denseOperators": false,
+    "SQL-Formatter-VSCode.newlineBeforeSemicolon": true,
+    "SQL-Formatter-VSCode.indentStyle": "standard",
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+}
