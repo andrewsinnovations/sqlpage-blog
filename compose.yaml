@@ -1,11 +1,20 @@
 services:
-  postgres:
+  db:
     image: postgres:latest
     container_name: blog-db
-    restart: always
     environment:
       POSTGRES_USER: dev
       POSTGRES_PASSWORD: dev
       POSTGRES_DB: blog
     ports:
       - "5432:5432"
+  sqlpage:
+    image: lovasoa/sqlpage:v0.35.2
+    container_name: blog-www
+    ports:
+      - "53000:53000"
+    depends_on:
+      - db
+    volumes:
+      - ./src/www:/var/www
+      - ./src/sqlpage:/etc/sqlpage
